@@ -1,0 +1,3 @@
+graft datatracker/static
+graft datatracker/templates
+global-exclude *.pyc

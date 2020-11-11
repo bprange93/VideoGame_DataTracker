@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 style="text-align: center">{% block title %} Sample Index {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<p>This starter code project is built around a 'sample.py' module. Its view files live in 'templates/sample'. It's recommended you build your own project module and template folder for your contributions to the project.</p>
+
+<p>This page extends the "base.html" file and inserts its various "blocks" (header, title and content) into the locations laid out for those blocks.</p>
+<p>This behaves similar to the '_Layout' feature in ASP.NET and allows you to easily keep a consistent theme across many pages and reuse elements like navbars.</p>
+<p>It can also display variables and information that is passed in to the view from the corresponding 'index' Blueprint action from the 'sample.py' module by calling the variable with double curly braces</p>
+<p>This following line is the 'message' variable from the index action:</p>
+<strong>{{ message }}</strong>
+<br />
+<p>You can even easily utilize logic in these views, similar to razor! Examine the code in 'sample/index.html' to see how this line is being generated:</p>
+{% for letter in word %}
+{% if letter == "o" %}
+<span> {{ letter.capitalize() }} </span>
+{% else %}
+<span> {{ letter }} </span>
+{% endif %}
+{% endfor %}
+<p>(Always remember to close off your ifs and your loops!)</p>
+
+
+<a href="{{ url_for('sample.other_example') }}"> Next Page </a>
+{% endblock %}
+
+

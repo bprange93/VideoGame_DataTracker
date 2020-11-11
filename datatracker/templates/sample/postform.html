@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+<h1 style="text-align: center">{% block title %} {{ page_title }} {% endblock %}</h1>
+{% endblock %}
+
+<p>Why doesn't this line show up in the view?</p>
+
+{% block content %}
+<p>This page shows a postform in action, along with various ways to redirect to other actions. Be sure to examine the 'templates/postform.html' file, along with the 'other_example' function in 'sample.py' to see what's going on and find out how to get back to the index from here.</p>
+
+  <form method="post">
+    <label for="title">Enter a Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
+{% endblock %}
