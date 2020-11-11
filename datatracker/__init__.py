@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask
 
@@ -28,5 +29,17 @@ def create_app():
     @app.route('/hello')
     def hello():
         return 'Hello, World!'
+
+    # test methods for API calls
+    @app.route('/apiTest')
+    def api_test():
+        api_result = requests.get('https://api.dccresource.com/api/games/5faac562db090e1a5c2dea0a')
+        return api_result.content
+
+    @app.route('/apiTest2')
+    def api_test_2():
+        api_result = requests.get('https://api.dccresource.com/api/games/5faac562db090e1a5c2dea0a')
+        game = api_result.json()
+        return 'Name: ' + game['name']
 
     return app

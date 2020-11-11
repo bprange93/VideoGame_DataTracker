@@ -1,0 +1,19 @@
+Valid API endpoints:
+	https://api.dccresource.com/api/games (Get all)
+	https://api.dccresource.com/api/games/OBJECTID (Get single)
+
+API return:
+
+"_id": string,
+"rank": number,
+"name": string,
+"platform": string,
+"year": number,
+"genre": string,
+"publisher": string,
+"naSales": number (in millions),
+"euSales": number (in millions),
+"jpSales": number (in millions),
+"otherSales": number (in millions),
+"globalSales": number (in millions),
+"__v": number
