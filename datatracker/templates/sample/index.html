@@ -1,3 +1,6 @@
+{# Template inheritance - overwrites blocks within base.html #}
+{# Views #}
+
 {% extends 'base.html' %}
 
 {% block header %}
@@ -23,7 +26,7 @@
 {% endfor %}
 <p>(Always remember to close off your ifs and your loops!)</p>
 
-
+{# Link to other views within sample blueprint (controller) #}
 <a href="{{ url_for('sample.other_example') }}"> Next Page </a>
 {% endblock %}
 

@@ -1,9 +1,13 @@
+{# Template inheritance - overwrites blocks within base.html #}
+{# Views #}
+
 {% extends 'base.html' %}
 
 {% block header %}
 <h1 style="text-align: center">{% block title %} {{ page_title }} {% endblock %}</h1>
 {% endblock %}
 
+{# this line doesn't show up because it is not told where to appear in base.html #}
 <p>Why doesn't this line show up in the view?</p>
 
 {% block content %}
