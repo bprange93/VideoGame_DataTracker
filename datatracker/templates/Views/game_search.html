@@ -20,19 +20,31 @@
 <table style = "width: 100%">
        <tr>
            <th>Name</th>
-           <th>year</th>
-           <th>publisher</th>
-           <th>genre</th>
-           <th>platform</th>
+           <th>Year</th>
+           <th>Publisher</th>
+           <th>Genre</th>
+           <th>Platform</th>
+           <th>Rank</th>
+           <th> North American Sales In Millions</th>
+           <th> European Sales In Millions</th>
+           <th>Japanese Sales In Millions</th>
+           <th>Other Sales In Millions</th>
+           <th> Global Sales In Millions</th>
        </tr>
 
-            <tr>
-                <td>{{ title['name']}}</td>
-                <td>{{ title['year']}}</td>
-                <td>{{title['publisher']}}</td>
-                <td>{{title['genre']}}</td>
-                <td>{{title['platform']}}</td>
-            </tr>
+        <tr>
+            <td>{{ title['name']}}</td>
+            <td>{{ title['year']}}</td>
+            <td>{{title['publisher']}}</td>
+            <td>{{title['genre']}}</td>
+            <td>{{title['platform']}}</td>
+            <td>{{title['rank']}}</td>
+            <td>{{title['naSales']}}</td>
+            <td>{{title['euSales']}}</td>
+            <td>{{title['jpSales']}}</td>
+            <td>{{title['otherSales']}}</td>
+            <td>{{title['globalSales']}}</td>
+        </tr>
 </table>
 {% endif %}
 
