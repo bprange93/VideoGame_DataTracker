@@ -1,0 +1,23 @@
+Visualize the Data in Charts
+	-Chart.js stacked bar chart (https://www.chartjs.org/samples/latest/charts/bar/stacked.html)
+	-each bar represents a game's total sales, section of bar represents sales by region (us, us, jp, other)
+
+Which video game console is best to invest in based on number of game copies sold globally
+	-basic: chart grouped by console showing total game copies sold
+	-for each game that runs on that console, add to total game copies sold on that console (create model for this?)
+	-could also target/break this down by region
+	-could weight this by region - how much of global sales do that region's sales account for?
+
+Sample Evaluation Question
+	-How should our investment projections change if we anticipate a 25% increase in a region's sales for next year?
+
+
+
+Proposed Workflow:
+	-search for a game and see its details (Story 6)
+	-see a data visualization of the number of copies sold per console (Story 5)
+	-visualize the API data in the form of line graphs or charts (Story 4)
+	-see which video game console is best to invest in
+	-write/visualize sample evaluation question
+	-clean up UI
+	-bonus
