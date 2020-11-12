@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+<h1> Welcome to Our Search</h1>
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+{% if error_message != null %}
+<div style="color: red">{{error_message}}</div>
+{% endif %}
+ <form method="post">
+    <label for="title">Enter a Title</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+    <input type="submit" value="Submit">
+  </form>
+{% if title != null %}
+<table style = "width: 100%">
+       <tr>
+           <th>Name</th>
+           <th>year</th>
+           <th>publisher</th>
+           <th>genre</th>
+           <th>platform</th>
+       </tr>
+
+            <tr>
+                <td>{{ title['name']}}</td>
+                <td>{{ title['year']}}</td>
+                <td>{{title['publisher']}}</td>
+                <td>{{title['genre']}}</td>
+                <td>{{title['platform']}}</td>
+            </tr>
+</table>
+{% endif %}
+
+{% endblock %}

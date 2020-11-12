@@ -1,6 +1,7 @@
 import os
 import requests
 
+
 from flask import Flask
 
 
@@ -20,9 +21,11 @@ def create_app():
     # import blueprint ("controller")
     # sample exists at the same level as __init__ - . allows us to import files at the same level
     from . import sample
+    from . import game
 
     # registers all blueprint routes to app
     app.register_blueprint(sample.bp)
+    app.register_blueprint(game.bp)
     # app now has access to all routes defined within sample.py
     # app.add_url_rule('/', endpoint='index')
 
@@ -41,5 +44,19 @@ def create_app():
         api_result = requests.get('https://api.dccresource.com/api/games/5faac562db090e1a5c2dea0a')
         game = api_result.json()
         return 'Name: ' + game['name']
+
+
+
+    @app.route('/apiTest3')
+    def api_test_3():
+        api_result = requests.get('https://api.dccresource.com/api/games/5faac562db090e1a5c2dea0a')
+        game = api_result.json()
+        return 'Title: ' + game['name'] + ' Genre: ' + game['genre']
+
+    @app.route('/apiTest4')
+    def api_test_4():
+        api_result = requests.get('https://api.dccresource.com/api/games/5faac562db090e1a5c2dea0a')
+        game = api_result.json()
+        return game
 
     return app
