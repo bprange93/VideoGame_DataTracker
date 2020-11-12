@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}
-<h1> Welcome to Our Search</h1>
+ Welcome to Our Search
 {% endblock %}
 
 {% block header %}
@@ -29,7 +29,7 @@
            <th> European Sales In Millions</th>
            <th>Japanese Sales In Millions</th>
            <th>Other Sales In Millions</th>
-           <th> Global Sales In Millions</th>
+           <th>Global Sales In Millions</th>
        </tr>
 
         <tr>
@@ -46,6 +46,28 @@
             <td>{{title['globalSales']}}</td>
         </tr>
 </table>
+<div class="container">
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+<script>
+    let myChart = document.getElementById('myChart').getContext('2d');
+    let salesForGame = new Chart(myChart,{
+        type: 'bar',
+        data:{
+            labels:['North American Sales', 'European Sales', 'Japanese Sales', 'Other Sales', 'Global Sales'],
+            datasets:[{
+                label: 'Sales in Millions',
+               data:[
+                {{title['naSales']}},
+                {{title['euSales']}},
+                {{title['jpSales']}},
+                {{title['otherSales']}},
+                {{title['globalSales']}}
+                ]
+            }]
+        }
+    });
+</script>
 {% endif %}
 
 {% endblock %}
