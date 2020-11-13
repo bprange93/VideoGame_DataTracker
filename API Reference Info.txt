@@ -19,3 +19,4 @@ API return:
 "__v": number
 
 Game Consoles: PS3, X360, 3DS, PS4, XOne, WiiU, Wii, PC, PSV, DS, PSP
+Genres: Sports, Platform, Racing, Role-Playing, Puzzle, Misc, Shooter, Simulation, Action, Fighting, Adventure, Strategy

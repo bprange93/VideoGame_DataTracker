@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Console Projection from 2013 on
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <canvas id="myChart" width="400" height="400"></canvas>
+</div>
+<script>
+    let labels = [];
+    let data = [];
+    {% for label in labels %}
+        labels.push('{{ label }}')
+    {% endfor %}
+    {% for data in data %}
+        data.push({{ data }})
+    {% endfor %}
+    let myChart = document.getElementById('myChart').getContext('2d');
+    let salesForGame = new Chart(myChart,{
+        type: 'bar',
+        data:{
+            labels: labels,
+            datasets:[
+            {
+               label: 'Genres',
+               data: data
+            }
+            ]
+        }
+    });
+</script>
+
+{% endblock %}

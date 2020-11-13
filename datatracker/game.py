@@ -34,6 +34,60 @@ def search_game():
             return render_template('Views/game_search.html', error_message=error_message)
 
 
+@bp.route('/sampleQuestion')
+def plot_game_stats():
+    api_result = requests.get('https://api.dccresource.com/api/games')
+    games = api_result.json()
+
+    # returns list of unique genres
+    genres = get_genres(games)
+
+    # returns list of totals by genre
+    genre_totals = get_genre_totals(games, genres)
+
+    return render_template('Views/sampleQuestion.html', data=genre_totals, labels=genres)
+
+
+def get_genres(games):
+    genres = []
+    for game in games:
+        if game['genre'] not in genres:
+            genres.append(game['genre'])
+    return genres
+
+
+def get_genre_totals(games, genres):
+    genre_totals = []
+
+    for genre in genres:
+        genre_totals.append(0)
+
+    for game in games:
+        if game['genre'] == 'Sports':
+            genre_totals[0] += 1
+        elif game['genre'] == 'Platform':
+            genre_totals[1] += 1
+        elif game['genre'] == 'Racing':
+            genre_totals[2] += 1
+        elif game['genre'] == 'Role-Playing':
+            genre_totals[3] += 1
+        elif game['genre'] == 'Puzzle':
+            genre_totals[4] += 1
+        elif game['genre'] == 'Misc':
+            genre_totals[5] += 1
+        elif game['genre'] == 'Shooter':
+            genre_totals[6] += 1
+        elif game['genre'] == 'Simulation':
+            genre_totals[7] += 1
+        elif game['genre'] == 'Action':
+            genre_totals[8] += 1
+        elif game['genre'] == 'Fighting':
+            genre_totals[9] += 1
+        elif game['genre'] == 'Adventure':
+            genre_totals[10] += 1
+        elif game['genre'] == 'Strategy':
+            genre_totals[11] += 1
+    return genre_totals
 
 
 def combine_game_stats(game_list):
