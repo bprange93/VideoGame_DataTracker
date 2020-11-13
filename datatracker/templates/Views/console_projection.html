@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}
+ Console Projection from 2013 on
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content %}
+
+{% for platform in console %}
+<p>{{platform}}</p>
+{% endfor %}
+
+{% endblock %}

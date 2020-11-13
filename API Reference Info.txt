@@ -17,3 +17,5 @@ API return:
 "otherSales": number (in millions),
 "globalSales": number (in millions),
 "__v": number
+
+Game Consoles: PS3, X360, 3DS, PS4, XOne, WiiU, Wii, PC, PSV, DS, PSP
