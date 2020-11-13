@@ -16,7 +16,7 @@
     <input name="title" id="title" value="{{ request.form['title'] }}" required>
     <input type="submit" value="Submit">
   </form>
-{% if title != null %}
+{% if game != null %}
 <table style = "width: 100%">
        <tr>
            <th>Name</th>
@@ -24,49 +24,59 @@
            <th>Publisher</th>
            <th>Genre</th>
            <th>Platform</th>
-           <th>Rank</th>
-           <th> North American Sales In Millions</th>
-           <th> European Sales In Millions</th>
-           <th>Japanese Sales In Millions</th>
-           <th>Other Sales In Millions</th>
-           <th>Global Sales In Millions</th>
        </tr>
-
         <tr>
-            <td>{{ title['name']}}</td>
-            <td>{{ title['year']}}</td>
-            <td>{{title['publisher']}}</td>
-            <td>{{title['genre']}}</td>
-            <td>{{title['platform']}}</td>
-            <td>{{title['rank']}}</td>
-            <td>{{title['naSales']}}</td>
-            <td>{{title['euSales']}}</td>
-            <td>{{title['jpSales']}}</td>
-            <td>{{title['otherSales']}}</td>
-            <td>{{title['globalSales']}}</td>
+            <td>{{ game['name'] }}</td>
+            <td>{{ game['year'] }}</td>
+            <td>{{ game['publisher'] }}</td>
+            <td>{{ game['genre'] }}</td>
+            <td>{{ game['platform'] }}</td>
         </tr>
 </table>
-<div class="container">
-    <canvas id="myChart" width="400" height="400"></canvas>
+<div class="row">
+    <div class="container col-md-6">
+        <canvas id="myChart1" width="400" height="400"></canvas>
+    </div>
+    <div class="container col-md-6">
+        <canvas id="myChart2" width="400" height="400"></canvas>
+    </div>
 </div>
 <script>
-    let myChart = document.getElementById('myChart').getContext('2d');
-    let salesForGame = new Chart(myChart,{
-        type: 'bar',
+    let myChart1 = document.getElementById('myChart1').getContext('2d');
+    let salesForGame = new Chart(myChart1,{
+        type: 'pie',
         data:{
-            labels:['North American Sales', 'European Sales', 'Japanese Sales', 'Other Sales', 'Global Sales'],
+            labels:['North American Sales', 'European Sales', 'Japanese Sales', 'Other Sales'],
             datasets:[{
-                label: 'Sales in Millions',
+                label: 'Global Sales in Millions',
                data:[
-                {{title['naSales']}},
-                {{title['euSales']}},
-                {{title['jpSales']}},
-                {{title['otherSales']}},
-                {{title['globalSales']}}
+                {{ game['naSales'] }},
+                {{ game['euSales'] }},
+                {{ game['jpSales'] }},
+                {{ game['otherSales'] }},
                 ]
             }]
         }
     });
+    {% if game_by_console != null %}
+        let labels = [];
+        let data = [];
+        {% for game in game_by_console %}
+            labels.push("{{ game['platform'] }}");
+            data.push({{ game['globalSales'] }});
+        {% endfor %}
+        let myChart2 = document.getElementById('myChart2').getContext('2d');
+        let salesForConsole = new Chart(myChart2,{
+            type: 'bar',
+            data:{
+                labels: labels,
+                datasets:[{
+                   label: 'Global Sales by Console',
+                   data: data
+                }]
+            }
+        });
+    {% endif %}
 </script>
 {% endif %}
 
