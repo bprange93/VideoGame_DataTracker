@@ -10,7 +10,7 @@
 {% block content %}
 
 <div class="container">
-    <canvas id="myChart" width="400" height="400"></canvas>
+    <canvas id="myChart"></canvas>
 </div>
 <script>
     let labels = [];
@@ -23,12 +23,12 @@
     {% endfor %}
     let myChart = document.getElementById('myChart').getContext('2d');
     let salesForGame = new Chart(myChart,{
-        type: 'bar',
+        type: 'pie',
         data:{
             labels: labels,
             datasets:[
             {
-               label: 'Genres',
+               label: 'Publishers',
                data: data,
                backgroundColor:[
                 '#d5f4e6',
@@ -37,6 +37,16 @@
                 '#618685'
                 ]
             }],
+        },
+        options:{
+            title:{
+                display: true,
+                text: 'Publisher Popularity',
+                fontSize: 25
+            },
+            legend:{
+                display: false
+            }
         }
     });
 </script>
