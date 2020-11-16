@@ -12,7 +12,7 @@ bp = Blueprint('game', __name__)
 def search_game():
     error_message = "No results for that search"
     if request.method == 'GET':
-        return render_template('Views/game_search.html')
+        return render_template('Views/gameSearch.html')
     else:
         api_result = requests.get('https://api.dccresource.com/api/games')
         games = api_result.json()
@@ -26,12 +26,66 @@ def search_game():
                 game_search_results.append(game)
 
         if len(game_search_results) == 1:
-            return render_template('Views/game_search.html', game=game_search_results[0])
+            return render_template('Views/gameSearch.html', game=game_search_results[0])
         elif len(game_search_results) > 1:
             game_stats_combined = combine_game_stats(game_search_results)
-            return render_template('Views/game_search.html', game=game_stats_combined, game_by_console=game_search_results)
+            return render_template('Views/gameSearch.html', game=game_stats_combined, game_by_console=game_search_results)
         else:
-            return render_template('Views/game_search.html', error_message=error_message)
+            return render_template('Views/gameSearch.html', error_message=error_message)
+
+
+@bp.route('/consoleProjection')
+def console_projection():
+    api_result = requests.get('https://api.dccresource.com/api/games')
+    games = api_result.json()
+    game_after2013 = []
+    for game in games:
+        if game['year'] is None:
+            continue
+        elif game['year'] >= 2013:
+            game_after2013.append(game)
+    console = []
+    for game in game_after2013:
+        if game['platform'] not in console:
+            console.append(game['platform'])
+    _ps3_sales = 0
+    _x360_sales = 0
+    _3ds_sales = 0
+    _ps4_sales = 0
+    _xone_sales = 0
+    _wiiu_sales = 0
+    _wii_sales = 0
+    _pc_sales = 0
+    _psv_sales = 0
+    _ds_sales = 0
+    _psp_sales = 0
+    for current_game in game_after2013:
+        if current_game['platform'] == "PS3":
+            _ps3_sales += current_game['globalSales']
+        elif current_game['platform'] == "X360":
+            _x360_sales += current_game['globalSales']
+        elif current_game['platform'] == "3DS":
+            _3ds_sales += current_game['globalSales']
+        elif current_game['platform'] == "PS4":
+            _ps4_sales += current_game['globalSales']
+        elif current_game['platform'] == "XOne":
+            _xone_sales += current_game['globalSales']
+        elif current_game['platform'] == "WiiU":
+            _wiiu_sales += current_game['globalSales']
+        elif current_game['platform'] == "Wii":
+            _wii_sales += current_game['globalSales']
+        elif current_game['platform'] == "PC":
+            _pc_sales += current_game['globalSales']
+        elif current_game['platform'] == "PSV":
+            _psv_sales += current_game['globalSales']
+        elif current_game['platform'] == "DS":
+            _ds_sales += current_game['globalSales']
+        elif current_game['platform'] == "PSP":
+            _psp_sales += current_game['globalSales']
+    sales_by_console_totals = [round(_ps3_sales, 2), round(_x360_sales, 2), round(_3ds_sales, 2), round(_ps4_sales, 2),
+                               round(_xone_sales, 2), round(_wiiu_sales, 2), round(_wii_sales, 2), round(_pc_sales, 2),
+                               round(_psv_sales, 2), round(_ds_sales, 2), round(_psp_sales, 2)]
+    return render_template('Views/consoleProjection.html', console=console, sales=sales_by_console_totals)
 
 
 @bp.route('/sampleQuestion')
@@ -77,7 +131,7 @@ def sort_games_by_publisher(games_by_console):
                 games_by_console_and_publisher[game['platform']][game['publisher']] += 1
 
     return games_by_console_and_publisher
-    # for
+    
     # goal data structure: games_by_console{platforms{publisher: total_games}}
 
 

@@ -1,29 +1,35 @@
 {% extends 'base.html' %}
 
 {% block title %}
- Welcome to Our Search
+Search Game
 {% endblock %}
 
 {% block header %}
+<h1><center>Search for a Game</center></h1>
 {% endblock %}
 
 {% block content %}
+<br>
 {% if error_message != null %}
 <div style="color: red">{{error_message}}</div>
 {% endif %}
- <form method="post">
+<form method="post">
+    <center>
     <label for="title">Enter a Title</label>
     <input name="title" id="title" value="{{ request.form['title'] }}" required>
     <input type="submit" value="Submit">
-  </form>
+    </center>
+</form>
+<br><br>
 {% if game != null %}
-<table style = "width: 100%">
-       <tr>
-           <th>Name</th>
-           <th>Year</th>
-           <th>Publisher</th>
-           <th>Genre</th>
-           <th>Platform</th>
+<center>
+    <table width="100%">
+       <tr class="table-primary">
+           <th style="font-size: large" scope="row">Name</th>
+           <th style="font-size: large" scope="row">Year</th>
+           <th style="font-size: large" scope="row">Publisher</th>
+           <th style="font-size: large" scope="row">Genre</th>
+           <th style="font-size: large" scope="row">Platform</th>
        </tr>
         <tr>
             <td>{{ game['name'] }}</td>
@@ -32,7 +38,9 @@
             <td>{{ game['genre'] }}</td>
             <td>{{ game['platform'] }}</td>
         </tr>
-</table>
+    </table>
+</center>
+<br><br>
 <div class="row">
     {% if game_by_console == null %}
     <div class="container mh-100 mw-100">
@@ -68,6 +76,13 @@
                     'grey'
                 ]
             }]
+        },
+        options:{
+            title:{
+                display: true,
+                text: 'Sales in Millions (by Region)',
+                fontSize: 25
+            },
         }
     });
     {% if game_by_console != null %}

@@ -1,68 +1,57 @@
 {% extends 'base.html' %}
 
-{% block title %}
- Console Projection from 2013 on
-{% endblock %}
+
+
+
 
 {% block header %}
+<h1><center>{% block title %}Publisher Popularity By Console{% endblock %}</center></h1>
 {% endblock %}
 
 {% block content %}
 
-<div class="container mh-100 mw-100">
-    <canvas id="myChart"></canvas>
-</div>
 <script>
+let labels = [];
+let data = [];
+let colors = [];
 function getRandomColor() {
-      var letters = '0123456789ABCDEF'.split('');
-      var color = '#';
-      for (var i = 0; i < 6; i++ ) {
+  var letters = '0123456789ABCDEF'.split('');
+  var color = '#';
+  for (var i = 0; i < 6; i++ ) {
         color += letters[Math.floor(Math.random() * 16)];
     }
-return color;
+    return color;
 }
-    let labels = [];
-    let datasets = [];
-    let label = [];
-    let data = [];
-    let colors = [];
-    {% for label in labels %}
-        labels.push('{{ label }}');
+</script>
+
+{% for console, publishers in dataset.items() %}
+<div class="container mh-100 mw-100">
+    <canvas id="{{console}}Chart"></canvas>
+</div>
+<script>
+    labels = [];
+    data = [];
+    colors = [];
+    {% for publisher, total in publishers.items() %}
+        labels.push('{{ publisher }}');
+        data.push( {{ total }} );
+        colors.push(getRandomColor());
     {% endfor %}
-    {% for console, publishers in dataset.items() %}
-        label = [];
-        data = [];
-        colors = [];
-        {% for publisher, total in publishers.items() %}
-            label.push('{{ publisher }}');
-            data.push( {{ total }} );
-            colors.push(getRandomColor());
-        {% endfor %}
-        datasets.push({
-            label: label,
-            data: data,
-            backgroundColor: colors
-        });
-    {% endfor %}
-    let myChart = document.getElementById('myChart').getContext('2d');
-    let salesForGame = new Chart(myChart,{
-        type: 'bar',
+    let _{{console}}Chart = document.getElementById('{{console}}Chart').getContext('2d');
+    let _{{console}}PieChart = new Chart(_{{console}}Chart,{
+        type: 'pie',
         data:{
             labels: labels,
-            datasets: datasets
+            datasets: [{
+                label: '{{ console }}',
+                data: data,
+                backgroundColor: colors
+            }]
         },
         options:{
-            scales: {
-                x: {
-                    stacked: true
-                },
-                y: {
-                    stacked: true
-                }
-            },
             title:{
                 display: true,
-                text: 'Publisher Popularity by Console',
+                text: '{{console}}',
                 fontSize: 25
             },
             legend:{
@@ -71,5 +60,6 @@ return color;
         }
     });
 </script>
+{% endfor %}
 
 {% endblock %}
