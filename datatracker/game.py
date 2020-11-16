@@ -43,7 +43,7 @@ def plot_game_stats():
     genres = get_genres(games)
 
     # returns list of totals by genre
-    genre_totals = get_genre_totals_2(games, genres)
+    genre_totals = get_genre_totals(games, genres)
 
     return render_template('Views/sampleQuestion.html', data=genre_totals, labels=genres)
 
@@ -53,11 +53,44 @@ def plot_bonus_question():
     api_result = requests.get('https://api.dccresource.com/api/games')
     games = api_result.json()
 
-    publishers = get_publishers(games)
+    #list of consoles
+    consoles = get_consoles(games)
+    # separate games by console - list of consoles
+    games_by_console = sort_games_by_console(games, consoles)
 
-    publisher_totals = get_publisher_totals(games, publishers)
+    # separate console lists by publisher
+    games_by_console_and_publisher = sort_games_by_publisher(games_by_console)
 
-    return render_template('Views/bonusQuestion.html', data=publisher_totals, labels=publishers)
+    return render_template('Views/bonusQuestion.html', dataset=games_by_console_and_publisher, labels=consoles)
+
+
+def sort_games_by_publisher(games_by_console):
+    games_by_console_and_publisher = {}
+    # iterate over dictionary
+    for console in games_by_console:
+        games_by_console_and_publisher[console] = {}
+    for console, games in games_by_console.items():
+        for game in games:
+            if game['publisher'] not in games_by_console_and_publisher[game['platform']]:
+                games_by_console_and_publisher[game['platform']][game['publisher']] = 1
+            elif game['publisher'] in games_by_console_and_publisher[game['platform']]:
+                games_by_console_and_publisher[game['platform']][game['publisher']] += 1
+
+    return games_by_console_and_publisher
+    # for
+    # goal data structure: games_by_console{platforms{publisher: total_games}}
+
+
+def sort_games_by_console(games, consoles):
+    games_by_console = {}
+    for console in consoles:
+        games_by_console[console] = []
+    for game in games:
+        for key in games_by_console:
+            if game['platform'] == key:
+                games_by_console[key].append(game)
+                break
+    return games_by_console
 
 
 def get_genres(games):
@@ -68,7 +101,15 @@ def get_genres(games):
     return genres
 
 
-def get_genre_totals_2(games, genres):
+def get_consoles(games):
+    consoles = []
+    for game in games:
+        if game['platform'] not in consoles:
+            consoles.append(game['platform'])
+    return consoles
+
+
+def get_genre_totals(games, genres):
     genre_totals = []
 
     for genre in genres:
@@ -133,58 +174,3 @@ def combine_game_stats(game_list):
     game_combined['otherSales'] = round(game_combined['otherSales'], 2)
     game_combined['globalSales'] = round(game_combined['globalSales'], 2)
     return game_combined
-
-
-@bp.route('/consoleProjection')
-def console_projection():
-    api_result = requests.get('https://api.dccresource.com/api/games')
-    games = api_result.json()
-    game_after2013 = []
-    for game in games:
-        if game['year'] is None:
-            continue
-        elif game['year'] >= 2013:
-            game_after2013.append(game)
-    console = []
-    for game in game_after2013:
-        if game['platform'] not in console:
-            console.append(game['platform'])
-    _ps3_sales = 0
-    _x360_sales = 0
-    _3ds_sales = 0
-    _ps4_sales = 0
-    _xone_sales = 0
-    _wiiu_sales = 0
-    _wii_sales = 0
-    _pc_sales = 0
-    _psv_sales = 0
-    _ds_sales = 0
-    _psp_sales = 0
-    for current_game in game_after2013:
-        if current_game['platform'] == "PS3":
-            _ps3_sales += current_game['globalSales']
-        elif current_game['platform'] == "X360":
-            _x360_sales += current_game['globalSales']
-        elif current_game['platform'] == "3DS":
-            _3ds_sales += current_game['globalSales']
-        elif current_game['platform'] == "PS4":
-            _ps4_sales += current_game['globalSales']
-        elif current_game['platform'] == "XOne":
-            _xone_sales += current_game['globalSales']
-        elif current_game['platform'] == "WiiU":
-            _wiiu_sales += current_game['globalSales']
-        elif current_game['platform'] == "Wii":
-            _wii_sales += current_game['globalSales']
-        elif current_game['platform'] == "PC":
-            _pc_sales += current_game['globalSales']
-        elif current_game['platform'] == "PSV":
-            _psv_sales += current_game['globalSales']
-        elif current_game['platform'] == "DS":
-            _ds_sales += current_game['globalSales']
-        elif current_game['platform'] == "PSP":
-            _psp_sales += current_game['globalSales']
-    sales_by_console_totals = [round(_ps3_sales, 2), round(_x360_sales, 2), round(_3ds_sales, 2), round(_ps4_sales, 2),
-                               round(_xone_sales, 2), round(_wiiu_sales, 2), round(_wii_sales, 2), round(_pc_sales, 2),
-                               round(_psv_sales, 2), round(_ds_sales, 2), round(_psp_sales, 2)]
-
-    return render_template('Views/console_projection.html', console=console, sales=sales_by_console_totals)

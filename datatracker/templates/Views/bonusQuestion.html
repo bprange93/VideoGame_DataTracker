@@ -9,7 +9,7 @@
 
 {% block content %}
 
-<div class="container">
+<div class="container mh-100 mw-100">
     <canvas id="myChart"></canvas>
 </div>
 <script>
@@ -22,31 +22,47 @@ function getRandomColor() {
 return color;
 }
     let labels = [];
+    let datasets = [];
+    let label = [];
     let data = [];
     let colors = [];
     {% for label in labels %}
-        labels.push('{{ label }}')
+        labels.push('{{ label }}');
     {% endfor %}
-    {% for data in data %}
-        data.push({{ data }});
-        colors.push(getRandomColor());
+    {% for console, publishers in dataset.items() %}
+        label = [];
+        data = [];
+        colors = [];
+        {% for publisher, total in publishers.items() %}
+            label.push('{{ publisher }}');
+            data.push( {{ total }} );
+            colors.push(getRandomColor());
+        {% endfor %}
+        datasets.push({
+            label: label,
+            data: data,
+            backgroundColor: colors
+        });
     {% endfor %}
     let myChart = document.getElementById('myChart').getContext('2d');
     let salesForGame = new Chart(myChart,{
-        type: 'pie',
+        type: 'bar',
         data:{
             labels: labels,
-            datasets:[
-            {
-               label: 'Publishers',
-               data: data,
-               backgroundColor:colors
-            }],
+            datasets: datasets
         },
         options:{
+            scales: {
+                x: {
+                    stacked: true
+                },
+                y: {
+                    stacked: true
+                }
+            },
             title:{
                 display: true,
-                text: 'Publisher Popularity',
+                text: 'Publisher Popularity by Console',
                 fontSize: 25
             },
             legend:{

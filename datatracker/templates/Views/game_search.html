@@ -34,12 +34,18 @@
         </tr>
 </table>
 <div class="row">
+    {% if game_by_console == null %}
+    <div class="container mh-100 mw-100">
+        <canvas id="myChart1"></canvas>
+    </div>
+    {% else %}
     <div class="container col-md-6">
-        <canvas id="myChart1" width="400" height="400"></canvas>
+        <canvas id="myChart1"></canvas>
     </div>
     <div class="container col-md-6">
-        <canvas id="myChart2" width="400" height="400"></canvas>
+        <canvas id="myChart2"></canvas>
     </div>
+    {% endif %}
 </div>
 <script>
     let myChart1 = document.getElementById('myChart1').getContext('2d');
@@ -49,11 +55,17 @@
             labels:['North American Sales', 'European Sales', 'Japanese Sales', 'Other Sales'],
             datasets:[{
                 label: 'Global Sales in Millions',
-               data:[
-                {{ game['naSales'] }},
-                {{ game['euSales'] }},
-                {{ game['jpSales'] }},
-                {{ game['otherSales'] }},
+                data:[
+                    {{ game['naSales'] }},
+                    {{ game['euSales'] }},
+                    {{ game['jpSales'] }},
+                    {{ game['otherSales'] }},
+                ],
+                backgroundColor:[
+                    'blue',
+                    'green',
+                    'red',
+                    'grey'
                 ]
             }]
         }
@@ -61,8 +73,18 @@
     {% if game_by_console != null %}
         let labels = [];
         let data = [];
+        let colors = [];
         {% for game in game_by_console %}
             labels.push("{{ game['platform'] }}");
+            {% if game['platform'] == 'PS3' or game['platform'] == 'PS4' or game['platform'] == 'PSV' or game['platform'] == 'PSP' %}
+                colors.push('blue')
+            {% elif game['platform'] == 'X360' or game['platform'] == 'XOne' %}
+                colors.push('green')
+            {% elif game['platform'] == 'DS' or game['platform'] == '3DS' or game['platform'] == 'WiiU' or game['platform'] == 'Wii' %}
+                colors.push('red')
+            {% elif game['platform'] == 'PC' %}
+                colors.push('black')
+            {% endif %}
             data.push({{ game['globalSales'] }});
         {% endfor %}
         let myChart2 = document.getElementById('myChart2').getContext('2d');
@@ -72,7 +94,8 @@
                 labels: labels,
                 datasets:[{
                    label: 'Global Sales by Console',
-                   data: data
+                   data: data,
+                   backgroundColor:colors
                 }]
             }
         });
