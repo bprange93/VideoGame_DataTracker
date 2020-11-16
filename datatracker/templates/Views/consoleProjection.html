@@ -9,8 +9,8 @@ Console Projection from 2013 - Present
 
 {% block content %}
 
-<div class="container">
-    <canvas id="myChart" width="400" height="400"></canvas>
+<div class="container mh-100 mw-100">
+    <canvas id="myChart"></canvas>
 </div>
 <script>
 function getRandomColor() {
@@ -24,11 +24,11 @@ function getRandomColor() {
     let labels = [];
     let data = [];
     let colors = [];
-    {% for console in console %}
-        labels.push('{{ console }}');
+    {% for label in labels %}
+        labels.push('{{ label }}');
     {% endfor %}
-    {% for sale in sales %}
-        data.push('{{ sale }}');
+    {% for data in data %}
+        data.push('{{ data }}');
         colors.push(getRandomColor());
     {% endfor %}
     let myChart = document.getElementById('myChart').getContext('2d');
