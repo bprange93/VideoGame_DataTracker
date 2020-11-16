@@ -43,7 +43,7 @@ def plot_game_stats():
     genres = get_genres(games)
 
     # returns list of totals by genre
-    genre_totals = get_genre_totals(games, genres)
+    genre_totals = get_genre_totals_2(games, genres)
 
     return render_template('Views/sampleQuestion.html', data=genre_totals, labels=genres)
 
@@ -54,6 +54,19 @@ def get_genres(games):
         if game['genre'] not in genres:
             genres.append(game['genre'])
     return genres
+
+
+def get_genre_totals_2(games, genres):
+    genre_totals = []
+
+    for genre in genres:
+        genre_totals.append(0)
+
+    for game in games:
+        for index, genre in enumerate(genres):
+            if game['genre'] == genre:
+                genre_totals[index] += 1
+    return genre_totals
 
 
 def get_genre_totals(games, genres):
