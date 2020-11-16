@@ -13,13 +13,23 @@
     <canvas id="myChart" width="400" height="400"></canvas>
 </div>
 <script>
+function getRandomColor() {
+      var letters = '0123456789ABCDEF'.split('');
+      var color = '#';
+      for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+return color;
+}
     let labels = [];
     let data = [];
+    let colors = [];
     {% for label in labels %}
         labels.push('{{ label }}')
     {% endfor %}
     {% for data in data %}
-        data.push({{ data }})
+        data.push({{ data }});
+        colors.push(getRandomColor());
     {% endfor %}
     let myChart = document.getElementById('myChart').getContext('2d');
     let salesForGame = new Chart(myChart,{
@@ -30,13 +40,18 @@
             {
                label: 'Genres',
                data: data,
-               backgroundColor:[
-                '#d5f4e6',
-                '#80ced6',
-                '#fefbd8',
-                '#618685'
-                ]
+               backgroundColor:colors
             }],
+        },
+        options:{
+            title:{
+                display: true,
+                text: 'Genre Popularity',
+                fontSize: 25
+            },
+            legend:{
+                display: false
+            }
         }
     });
 </script>
